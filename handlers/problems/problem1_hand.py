@@ -8,7 +8,6 @@ from utils.problem1states import Problem1States
 from .ppf_plotter import plot_PPF
 
 
-
 router = Router()
 
 

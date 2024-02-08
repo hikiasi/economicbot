@@ -26,8 +26,8 @@ def plot_PPF(A1, B1, A2, B2, user_id):
         plt.plot([0, x_max], [y_max, 0], 'r--')  # Прямая линия без точки перегиба
         plt.fill([0, 0, x_max], [y_max, 0, 0], color='lightgray', alpha=0.5)  # Треугольник общий
 
-    plt.xlabel('Агрегаты')
-    plt.ylabel('Двигатели')
+    plt.xlabel('Товар А')
+    plt.ylabel('Товар Б')
     plt.title('График КПВ')
     plt.grid(True)
     plt.savefig(f'handlers/problems/{user_id}.png', dpi=300)
