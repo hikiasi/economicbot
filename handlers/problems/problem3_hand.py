@@ -1,20 +1,25 @@
 from aiogram import Router, F, types
 from aiogram.types import Message
-from aiogram.fsm.state import State
 from aiogram.fsm.context import FSMContext
 from utils.problem3states import Problem3States
+from utils.validators import validate_input_float
+
+from keyboards import reply
 
 router = Router()
 
 
 @router.message(F.text.lower().in_(["3 задача"]))
 async def handle_problem3(message: Message, state: FSMContext):
-    await message.answer("Давайте начнем решать третью задачу! Введите коэффициент A:")
+    await message.answer("Вы выбрали задачу для расчет объема заданных функций спроса и предложения уровня цены🥉\n"
+                         "После того, как Вы введете все параметры, Вы получите ответ с ситуацией на рынке и какой будет размер дефицита или излишка.\n"
+                         "Введите коэффициент A:")
     await state.set_state(Problem3States.InputA)
 
 
 @router.message(Problem3States.InputA)
 async def input_a(message: types.Message, state: FSMContext):
+    # if await validate_input_float(message, state, 'A'):
     try:
         A = float(message.text)
         await state.update_data(A=A)
@@ -26,10 +31,11 @@ async def input_a(message: types.Message, state: FSMContext):
 
 @router.message(Problem3States.InputB)
 async def input_b(message: types.Message, state: FSMContext):
+    # if await validate_input_float(message, state, 'B'):
     try:
         B = float(message.text)
         await state.update_data(B=B)
-        await message.answer("Прекрасно! Теперь введите коэффициент C:")
+        await message.answer("Отлично! Теперь введите коэффициент C:")
         await state.set_state(Problem3States.InputC)
     except ValueError:
         await message.answer("Пожалуйста, введите число.")
@@ -37,6 +43,7 @@ async def input_b(message: types.Message, state: FSMContext):
 
 @router.message(Problem3States.InputC)
 async def input_c(message: types.Message, state: FSMContext):
+    # if await validate_input_float(message, state, 'C'):
     try:
         C = float(message.text)
         await state.update_data(C=C)
@@ -48,6 +55,7 @@ async def input_c(message: types.Message, state: FSMContext):
 
 @router.message(Problem3States.InputD)
 async def input_d(message: types.Message, state: FSMContext):
+    # if await validate_input_float(message, state, 'D'):
     try:
         D = float(message.text)
         await state.update_data(D=D)
@@ -81,7 +89,7 @@ async def input_d(message: types.Message, state: FSMContext):
 
         # Отправляем ответ пользователю
         await message.answer(f"При уровне цены в {E} денежных единиц на рынке будет ситуация {situation}. "
-                             f"Размер {situation} составит: {abs(surplus_deficit)} единиц товара.")
+                             f"Размер {situation} составит: {abs(surplus_deficit)} единиц товара.", reply_markup=reply.main)
 
         # Сбрасываем состояние
         await state.clear()

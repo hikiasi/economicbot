@@ -1,8 +1,7 @@
-import random
-
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.types import Message
-from aiogram.filters import Command, CommandObject, CommandStart
+from aiogram.filters import CommandStart
+from aiogram.fsm.context import FSMContext
 
 from keyboards import reply
 
@@ -30,9 +29,7 @@ async def start(message: Message):
     await message.answer(greeting_text, reply_markup=reply.main)
 
 
-@router.message(Command(commands=["rn", "random-number"]))  # /rn 1-100
-async def get_random_number(message: Message, command: CommandObject):
-    a, b = [int(n) for n in command.args.split("-")]
-    rnum = random.randint(a, b)
-
-    await message.reply(f"Рандомное число: {rnum}")
+# @router.message(commands=['cancel'])
+# async def cancel(message: Message, state: FSMContext):
+#     await state.clear()
+#     await message.answer("Операция отменена. Выберите задачу из списка.", reply_markup=reply.main)

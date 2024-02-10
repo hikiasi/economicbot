@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 
 from utils.states import Form
 from keyboards.builders import profile
-from keyboards.reply import rmk
+# from keyboards.reply import rmk
 
 router = Router()
 
@@ -22,7 +22,7 @@ async def fill_profile(message: Message, state: FSMContext):
 async def form_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(Form.age)
-    await message.answer("Отлично, теперь введи свой возраст", reply_markup=rmk)
+    # await message.answer("Отлично, теперь введи свой возраст", reply_markup=rmk)
 
 @router.message(Form.age)
 async def form_age(message: Message, state: FSMContext):
@@ -40,7 +40,7 @@ async def form_age(message: Message, state: FSMContext):
 async def form_sex(message: Message, state: FSMContext):
     await state.update_data(sex=message.text)
     await state.set_state(Form.about)
-    await message.answer("Расскажи о себе", reply_markup=rmk)
+    # await message.answer("Расскажи о себе", reply_markup=rmk)
 
 @router.message(Form.sex)
 async def incorrect_form_sex(message: Message, state: FSMContext):
