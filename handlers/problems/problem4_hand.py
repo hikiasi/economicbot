@@ -13,36 +13,25 @@ router = Router()
 async def handle_problem4(message: Message, state: FSMContext):
     await message.answer("Вы выбрали задачу для расчета прибыли фирмы🏅\n"
                          "После того, как Вы введете все параметры, Вы получите ответ с итоговой прибылью с учетом всех издержек.\n"
-                         "Введите объем производства (Q):")
+                         "Введите объем производства (Q):", reply_markup=reply.in_task)
     await state.set_state(Problem4States.InputQ)
 
 
 @router.message(Problem4States.InputQ)
 async def input_q(message: types.Message, state: FSMContext):
-    # if await validate_input_int(message, state, 'Q'):
-    try:
-        Q = int(message.text)
-        await state.update_data(Q=Q)
-        await message.answer("Отлично! Теперь введите цену в штуках (P):")
+    if await validate_input_int(message, state, 'Q'):
+        await message.answer("Отлично! Теперь введите цену в штуках (P):", reply_markup=reply.in_task)
         await state.set_state(Problem4States.InputP)
-    except ValueError:
-        await message.answer("Пожалуйста, введите целое число.")
 
 
 @router.message(Problem4States.InputP)
 async def input_p(message: types.Message, state: FSMContext):
-    # if await validate_input_int(message, state, 'P'):
-    try:
-        P = int(message.text)
-        await state.update_data(P=P)
+    if await validate_input_int(message, state, 'P'):
         await message.answer(
             "Прекрасно! Теперь введите данные о переменных издержках.\n"
             "Пример ввода: 'Оплата топлива, 5'\n"
-            "Для каждого типа издержек введите от 0 до 5 строк."
-        )
+            "Для каждого типа издержек введите от 0 до 5 строк.", reply_markup=reply.in_task)
         await state.set_state(Problem4States.InputVC)
-    except ValueError:
-        await message.answer("Пожалуйста, введите целое число.")
 
 
 @router.message(Problem4States.InputVC)
@@ -52,7 +41,7 @@ async def input_vc(message: types.Message, state: FSMContext):
         VC_total = 0
         VC_info = []
         if len(variables) > 5:
-            await message.answer("Вы ввели больше 5 строк, в решении будут учтены только первые 5 строк📋")
+            await message.answer("Вы ввели больше 5 строк, в решении будут учтены только первые 5 строк📋", reply_markup=reply.in_task)
         for variable in variables[:5]:  # Ограничим ввод до 5 строк
             data = variable.split(',')
             if len(data) == 2:
@@ -60,23 +49,20 @@ async def input_vc(message: types.Message, state: FSMContext):
                 cost = int(cost.strip())
                 if cost <= 0:
                     await message.answer(
-                        "Издержки не могут быть нулевыми или отрицательными. Пожалуйста, укажите положительное значение издержек."
-                    )
+                        "Издержки не могут быть нулевыми или отрицательными. Пожалуйста, укажите положительное значение издержек.", reply_markup=reply.in_task)
                     return
                 VC_total += cost
                 VC_info.append((name.strip(), cost))
             elif variable.strip():  # Проверка на пустые строки
                 await message.answer(
                     "Неверный формат ввода данных. Пожалуйста, введите данные о переменных издержках.\n"
-                    "Пример ввода: 'Оплата топлива, 5'\n"
-                )
+                    "Пример ввода: 'Оплата топлива, 5'\n", reply_markup=reply.in_task)
                 return
 
         await state.update_data(VC_total=VC_total, VC_info=VC_info)
         await message.answer(
             "Прекрасно! Теперь введите данные о постоянных издержках.\n"
-            "Пример ввода: 'Аренда зала, 200000'\n"
-        )
+            "Пример ввода: 'Аренда зала, 200000'\n", reply_markup=reply.in_task)
         await state.set_state(Problem4States.InputFC)
     except ValueError:
         await message.answer("Пожалуйста, введите целое число.")
@@ -89,7 +75,7 @@ async def input_fc(message: types.Message, state: FSMContext):
         FC_total = 0
         FC_info = []
         if len(variables) > 5:
-            await message.answer("Вы ввели больше 5 строк, в решении будут учтены только первые 5 строк📋")
+            await message.answer("Вы ввели больше 5 строк, в решении будут учтены только первые 5 строк📋", reply_markup=reply.in_task)
         for variable in variables[:5]:  # Ограничим ввод до 5 строк
             data = variable.split(',')
             if len(data) == 2:
@@ -97,16 +83,14 @@ async def input_fc(message: types.Message, state: FSMContext):
                 cost = int(cost.strip())
                 if cost <= 0:
                     await message.answer(
-                        "Издержки не могут быть нулевыми или отрицательными. Пожалуйста, укажите положительное значение издержек."
-                    )
+                        "Издержки не могут быть нулевыми или отрицательными. Пожалуйста, укажите положительное значение издержек.", reply_markup=reply.in_task)
                     return
                 FC_total += cost
                 FC_info.append((name.strip(), cost))
             elif variable.strip():  # Проверка на пустые строки
                 await message.answer(
                     "Неверный формат ввода данных. Пожалуйста, введите данные о постоянных издержках.\n"
-                    "Пример ввода: 'Аренда зала, 200000'\n"
-                )
+                    "Пример ввода: 'Аренда зала, 200000'\n", reply_markup=reply.in_task)
                 return
 
         await state.update_data(FC_total=FC_total, FC_info=FC_info)

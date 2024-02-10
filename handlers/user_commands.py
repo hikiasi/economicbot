@@ -1,6 +1,6 @@
 from aiogram import Router, F
-from aiogram.types import Message
-from aiogram.filters import CommandStart
+from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 
 from keyboards import reply
@@ -28,6 +28,14 @@ async def start(message: Message):
 
     await message.answer(greeting_text, reply_markup=reply.main)
 
+@router.message(Command(commands=["cancel"]))
+@router.message(F.text.lower() == "отмена")
+async def cmd_cancel(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(
+        text="Задача отменена",
+        reply_markup=reply.main
+    )
 
 # @router.message(commands=['cancel'])
 # async def cancel(message: Message, state: FSMContext):

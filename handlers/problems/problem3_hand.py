@@ -13,61 +13,41 @@ router = Router()
 async def handle_problem3(message: Message, state: FSMContext):
     await message.answer("Вы выбрали задачу для расчет объема заданных функций спроса и предложения уровня цены🥉\n"
                          "После того, как Вы введете все параметры, Вы получите ответ с ситуацией на рынке и какой будет размер дефицита или излишка.\n"
-                         "Введите коэффициент A:")
+                         "Введите коэффициент A:", reply_markup=reply.in_task)
     await state.set_state(Problem3States.InputA)
 
 
 @router.message(Problem3States.InputA)
 async def input_a(message: types.Message, state: FSMContext):
-    # if await validate_input_float(message, state, 'A'):
-    try:
-        A = float(message.text)
-        await state.update_data(A=A)
-        await message.answer("Отлично! Теперь введите коэффициент B:")
+    if await validate_input_float(message, state, 'A'):
+        await message.answer("Отлично! Теперь введите коэффициент B:", reply_markup=reply.in_task)
         await state.set_state(Problem3States.InputB)
-    except ValueError:
-        await message.answer("Пожалуйста, введите число.")
 
 
 @router.message(Problem3States.InputB)
 async def input_b(message: types.Message, state: FSMContext):
-    # if await validate_input_float(message, state, 'B'):
-    try:
-        B = float(message.text)
-        await state.update_data(B=B)
-        await message.answer("Отлично! Теперь введите коэффициент C:")
+    if await validate_input_float(message, state, 'B'):
+        await message.answer("Отлично! Теперь введите коэффициент C:", reply_markup=reply.in_task)
         await state.set_state(Problem3States.InputC)
-    except ValueError:
-        await message.answer("Пожалуйста, введите число.")
 
 
 @router.message(Problem3States.InputC)
 async def input_c(message: types.Message, state: FSMContext):
-    # if await validate_input_float(message, state, 'C'):
-    try:
-        C = float(message.text)
-        await state.update_data(C=C)
-        await message.answer("Отлично! Теперь введите коэффициент D:")
+    if await validate_input_float(message, state, 'C'):
+        await message.answer("Отлично! Теперь введите коэффициент D:", reply_markup=reply.in_task)
         await state.set_state(Problem3States.InputD)
-    except ValueError:
-        await message.answer("Пожалуйста, введите число.")
 
 
 @router.message(Problem3States.InputD)
 async def input_d(message: types.Message, state: FSMContext):
-    # if await validate_input_float(message, state, 'D'):
-    try:
-        D = float(message.text)
-        await state.update_data(D=D)
-        await message.answer("Отлично! Теперь введите коэффициент E:")
+    if await validate_input_float(message, state, 'D'):
+        await message.answer("Отлично! Теперь введите коэффициент E:", reply_markup=reply.in_task)
         await state.set_state(Problem3States.InputE)
-    except ValueError:
-        await message.answer("Пожалуйста, введите число.")
 
 
 @router.message(Problem3States.InputE)
 async def input_d(message: types.Message, state: FSMContext):
-    try:
+    if await validate_input_float(message, state, 'E'):
         E = float(message.text)
         await state.update_data(E=E)
 
@@ -93,5 +73,3 @@ async def input_d(message: types.Message, state: FSMContext):
 
         # Сбрасываем состояние
         await state.clear()
-    except ValueError:
-        await message.answer("Пожалуйста, введите число.")

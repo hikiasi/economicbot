@@ -23,3 +23,15 @@ main = ReplyKeyboardMarkup(
     input_field_placeholder="Выберите задачу из меню",
     selective=True
 )
+
+in_task = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Отмена")
+        ]
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True,
+    input_field_placeholder="Выберите задачу из меню",
+    selective=True
+)
