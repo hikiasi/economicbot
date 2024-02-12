@@ -1,8 +1,5 @@
-from aiogram.types import (
-    ReplyKeyboardMarkup,
-    KeyboardButton
-)
-from aiogram.filters import Command
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+
 
 # Основная клавиатура для выбора задач
 main = ReplyKeyboardMarkup(
@@ -19,18 +16,14 @@ main = ReplyKeyboardMarkup(
     resize_keyboard=True,  # Разрешить изменение размера клавиатуры
     one_time_keyboard=True,
     input_field_placeholder="Выберите задачу из меню",  # Placeholder для поля ввода
-    selective=True
+    selective=True,
 )
 
 # Клавиатура для отмены текущей задачи и возврата к основному меню
 in_task = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(text="Отмена")
-        ]
-    ],
+    keyboard=[[KeyboardButton(text="Отмена")]],
     resize_keyboard=True,
     one_time_keyboard=True,
     input_field_placeholder="Выберите задачу из меню",
-    selective=True
+    selective=True,
 )

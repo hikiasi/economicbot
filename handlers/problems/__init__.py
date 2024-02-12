@@ -1,5 +1,5 @@
-from . import problem1_hand, problem2_hand, problem3_hand, problem4_hand
 from aiogram import Router
+from . import problem1_hand, problem2_hand, problem3_hand, problem4_hand
 
 # Инициализация главного router для модуля 'problems'
 router = Router()

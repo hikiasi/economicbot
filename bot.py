@@ -6,18 +6,17 @@
 """
 
 import asyncio
-from aiogram import Bot, Dispatcher
 
-# Импорт роутеров и коллбэков
-from handlers import bot_messages, user_commands, questionaire, problems
-from callbacks import pagination
+from aiogram import Bot, Dispatcher
 
 # Импорт конфигурации бота
 from config_reader import config
 
+# Импорт роутеров и коллбэков
+from handlers import problems, user_commands
+
 
 async def main():
-
     """
     Основная функция для запуска бота.
 
@@ -31,14 +30,12 @@ async def main():
     # Подключаем роутеры для обработки сообщений и коллбэков
     dp.include_routers(
         user_commands.router,
-        pagination.router,
-        questionaire.router,
         problems.router,
-        bot_messages.router
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

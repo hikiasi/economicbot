@@ -8,7 +8,6 @@
 
 
 async def validate_input_float(message, state, state_name):
-
     """
     Функция для проверки ввода вещественных чисел.
 
@@ -39,14 +38,17 @@ async def validate_input_float(message, state, state_name):
     except ValueError as e:
         error_messages = {
             "No value input": "Пожалуйста, введите вещественное число через точку.",
-            "Not positive": "Пожалуйста, введите положительное вещественное число через точку."
+            "Not positive": "Пожалуйста, введите положительное вещественное число через точку.",
         }
-        await message.answer(error_messages.get(str(e), "Что-то пошло не так, пожалуйста введите указанное значение."))
+        await message.answer(
+            error_messages.get(
+                str(e), "Что-то пошло не так, пожалуйста введите указанное значение."
+            )
+        )
         return False  # Возвращаем False, если валидация не удалась
 
 
 async def validate_input_int(message, state, state_name):
-
     """
     Функция для проверки ввода целых чисел.
 
@@ -76,7 +78,11 @@ async def validate_input_int(message, state, state_name):
     except ValueError as e:
         error_messages = {
             "No value input": "Пожалуйста, введите целое число.",
-            "Not positive": "Пожалуйста, введите положительное целое число."
+            "Not positive": "Пожалуйста, введите положительное целое число.",
         }
-        await message.answer(error_messages.get(str(e), "Что-то пошло не так, пожалуйста введите указанное значение."))
+        await message.answer(
+            error_messages.get(
+                str(e), "Что-то пошло не так, пожалуйста введите указанное значение."
+            )
+        )
         return False  # Возвращаем False, если валидация не удалась

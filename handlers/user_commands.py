@@ -2,19 +2,19 @@
 Этот модуль содержит обработчики для пользовательских команд, таких как /start и /cancel.
 """
 
-from aiogram import Router, F
-from aiogram.types import Message
-from aiogram.filters import CommandStart, Command
+from aiogram import F, Router
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
 
 from keyboards import reply
+
 
 router = Router()
 
 
 @router.message(CommandStart())
 async def start(message: Message):
-
     """
     Обрабатывает команду /start.
     Отправляет приветственное сообщение пользователю с кратким описанием доступных задач
@@ -48,7 +48,6 @@ async def start(message: Message):
 @router.message(Command(commands=["cancel"]))
 @router.message(F.text.lower() == "отмена")
 async def cmd_cancel(message: Message, state: FSMContext):
-
     """
     Обрабатывает команду /cancel и сообщение "Отмена"
     Очищает текущее состояние и отправляет сообщение о подтверждении отмены
@@ -62,7 +61,4 @@ async def cmd_cancel(message: Message, state: FSMContext):
     """
 
     await state.clear()
-    await message.answer(
-        text="Задача отменена",
-        reply_markup=reply.main
-    )
+    await message.answer(text="Задача отменена", reply_markup=reply.main)

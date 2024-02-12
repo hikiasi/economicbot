@@ -2,7 +2,7 @@
 Модуль, содержащий класс состояний для третьей задачи.
 """
 
-from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.state import State, StatesGroup
 
 
 class Problem3States(StatesGroup):
