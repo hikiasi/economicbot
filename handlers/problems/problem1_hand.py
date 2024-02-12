@@ -4,13 +4,16 @@
 
 import os
 import time
-from aiogram import Router, F, types
-from aiogram.types import Message, FSInputFile
-from aiogram.fsm.context import FSMContext
+
+from aiogram import F, Router, types
 from aiogram.enums import ChatAction
+from aiogram.fsm.context import FSMContext
+from aiogram.types import FSInputFile, Message
+
+from keyboards import reply
 from utils.problem1states import Problem1States
 from utils.validators import validate_input_float
-from keyboards import reply
+
 from .ppf_plotter import plot_PPF
 
 
