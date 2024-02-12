@@ -1,3 +1,7 @@
+"""
+Модуль для обработки сообщений и управления состояниями для решения задачи по построению общей КПВ
+"""
+
 import os
 from aiogram import Router, F, types
 from aiogram.types import Message, FSInputFile
@@ -15,6 +19,18 @@ router = Router()
 
 @router.message(F.text.lower().in_(["1 задача"]))
 async def handle_problem1(message: Message, state: FSMContext):
+
+    """
+    Обрабатывает команду на начало решения задачи по построению общей КПВ.
+
+    Args:
+        message: Входящее сообщение.
+        state: Состояние FSM.
+
+    Returns:
+        None
+    """
+
     await message.answer("Вы выбрали задачу по построению общей КПВ🥇\n"
                          "После того, как Вы введете все параметры, Вы получите общий график КПВ для двух производителей товаров А и Б.\n"
                          "Введите максимальный объем производства товара А для производителя 1:", reply_markup=reply.in_task)
@@ -23,6 +39,18 @@ async def handle_problem1(message: Message, state: FSMContext):
 
 @router.message(Problem1States.InputA1)
 async def input_a1(message: types.Message, state: FSMContext):
+
+    """
+    Обрабатывает ввод максимального объема производства товара А для производителя 1.
+
+    Args:
+        message: Входящее сообщение.
+        state: Состояние FSM.
+
+    Returns:
+        None
+    """
+
     if await validate_input_float(message, state, 'a1'):
         await message.answer("Отлично! Теперь введите максимальный объем производства товара Б для производителя 1:", reply_markup=reply.in_task)
         await state.set_state(Problem1States.InputB1)
@@ -30,6 +58,18 @@ async def input_a1(message: types.Message, state: FSMContext):
 
 @router.message(Problem1States.InputB1)
 async def input_b1(message: types.Message, state: FSMContext):
+
+    """
+    Обрабатывает ввод максимального объема производства товара Б для производителя 1.
+
+    Args:
+        message: Входящее сообщение.
+        state: Состояние FSM.
+
+    Returns:
+        None
+    """
+
     if await validate_input_float(message, state, 'b1'):
         await message.answer("Прекрасно! Теперь введите максимальный объем производства товара А для производителя 2:", reply_markup=reply.in_task)
         await state.set_state(Problem1States.InputA2)
@@ -37,6 +77,18 @@ async def input_b1(message: types.Message, state: FSMContext):
 
 @router.message(Problem1States.InputA2)
 async def input_a2(message: types.Message, state: FSMContext):
+
+    """
+    Обрабатывает ввод максимального объема производства товара А для производителя 2.
+
+    Args:
+        message: Входящее сообщение.
+        state: Состояние FSM.
+
+    Returns:
+        None
+    """
+
     if await validate_input_float(message, state, 'a2'):
         await message.answer("Отлично! Теперь введите максимальный объем производства товара Б для производителя 2:", reply_markup=reply.in_task)
         await state.set_state(Problem1States.InputB2)
@@ -44,6 +96,18 @@ async def input_a2(message: types.Message, state: FSMContext):
 
 @router.message(Problem1States.InputB2)
 async def input_b2(message: types.Message, state: FSMContext):
+
+    """
+    Обрабатывает ввод максимального объема производства товара Б для производителя 2.
+
+    Args:
+        message: Входящее сообщение.
+        state: Состояние FSM.
+
+    Returns:
+        None
+    """
+
     if await validate_input_float(message, state, 'b2'):
         user_id = message.from_user.id
 

@@ -1,3 +1,7 @@
+"""
+Модуль, содержащий класс состояний для третьей задачи.
+"""
+
 from aiogram.fsm.state import StatesGroup, State
 
 
