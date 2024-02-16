@@ -115,9 +115,9 @@ async def input_d(message: types.Message, state: FSMContext):
         data = await state.get_data()
 
         # Вычисляем равновесие по формулам спроса и предложения
-        P = (data["C"] - data["A"]) / (data["B"] + data["D"])
+        P = ((data["C"] - data["A"]) / (data["B"] + data["D"])) * (-1)
         Qd = data["A"] * P - data["B"]
-        Qs = data["C"] - data["D"] * P
+        Qs = data["C"] + data["D"] * P
 
         # Отправляем ответ пользователю
         await message.answer(

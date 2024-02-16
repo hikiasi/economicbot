@@ -117,7 +117,7 @@ async def input_d(message: types.Message, state: FSMContext):
 
 
 @router.message(Problem3States.InputE)
-async def input_d(message: types.Message, state: FSMContext):
+async def input_e(message: types.Message, state: FSMContext):
     """
     Обрабатывает ввод коэффициента E, вычисляет объем дефицита/излишка на рынке и отправляет ответ пользователю.
 
@@ -137,11 +137,11 @@ async def input_d(message: types.Message, state: FSMContext):
         data = await state.get_data()
 
         # Вычисляем цену равновесия
-        P = (data["C"] - data["A"]) / (data["B"] + data["D"])
+        P = ((data["C"] - data["A"]) / (data["B"] + data["D"])) * (-1)
 
         # Вычисляем объем спроса и предложения при данной цене
         Qd = data["A"] * P - data["B"]
-        Qs = data["C"] - data["D"] * P
+        Qs = data["C"] + data["D"] * P
 
         # Вычисляем разницу между спросом и предложением
         surplus_deficit = round(Qs - Qd, 2)
