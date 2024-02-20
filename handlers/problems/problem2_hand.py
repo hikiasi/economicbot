@@ -1,5 +1,6 @@
 """
-Модуль для обработки сообщений и управления состояниями для решения задачи по нахождению точки рыночного равновесия.
+Модуль для обработки сообщений и управления состояниями для решения задачи по нахождению
+точки рыночного равновесия.
 """
 
 from aiogram import F, Router, types
@@ -92,7 +93,6 @@ async def input_c(message: types.Message, state: FSMContext):
         None
     """
 
-    # if await validate_input_float(message, state, "C"):
     try:
         C = float(message.text)
         await state.update_data(C=C)

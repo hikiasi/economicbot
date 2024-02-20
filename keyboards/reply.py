@@ -1,3 +1,7 @@
+"""
+Модуль, содержащий клавиатуру для пользователя.
+"""
+
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 

@@ -1,5 +1,6 @@
 """
-Модуль для обработки сообщений и управления состояниями для решения задачи расчета объема дефицита/излишка на рынке.
+Модуль для обработки сообщений и управления состояниями для решения задачи расчета
+объема дефицита/излишка на рынке.
 """
 
 from aiogram import F, Router, types
@@ -91,13 +92,17 @@ async def input_c(message: types.Message, state: FSMContext):
     Returns:
         None
     """
+    try:
+        C = float(message.text)
+        await state.update_data(C=C)
 
-    if await validate_input_float(message, state, "C"):
         await message.answer(
             "Отлично! Теперь введите коэффициент D:",
             reply_markup=reply.in_task,
         )
         await state.set_state(Problem3States.InputD)
+    except ValueError:
+        await message.answer("Пожалуйста, введите число.")
 
 
 @router.message(Problem3States.InputD)
@@ -124,7 +129,8 @@ async def input_d(message: types.Message, state: FSMContext):
 @router.message(Problem3States.InputE)
 async def input_e(message: types.Message, state: FSMContext):
     """
-    Обрабатывает ввод коэффициента E, вычисляет объем дефицита/излишка на рынке и отправляет ответ пользователю.
+    Обрабатывает ввод коэффициента E, вычисляет объем дефицита/излишка на рынке и отправляет
+    ответ пользователю.
 
     Args:
         message: Входящее сообщение.
@@ -141,28 +147,36 @@ async def input_e(message: types.Message, state: FSMContext):
         # Получаем все значения из состояния
         data = await state.get_data()
 
-        # Вычисляем цену равновесия
-        P = ((data["C"] - data["A"]) / (data["B"] + data["D"])) * (-1)
-
-        # Вычисляем объем спроса и предложения при данной цене
-        Qd = data["A"] * P - data["B"]
-        Qs = data["C"] + data["D"] * P
+        # Вычисляем объемы спроса и предложения при уровне цены E
+        Qd = data["A"] - data["B"] * E
+        Qs = data["C"] + data["D"] * E
 
         # Вычисляем разницу между спросом и предложением
         surplus_deficit = round(Qs - Qd, 2)
 
         # Определяем ситуацию на рынке
         situation = (
-            "дефицит"
+            "дефицита"
             if surplus_deficit < 0
-            else "излишек" if surplus_deficit > 0 else "равновесие"
+            else "излишка" if surplus_deficit > 0 else "равновесия"
         )
+
+        # Формируем сообщение в зависимости от ситуации
+        if situation == "равновесия":
+            response = (
+                f"При уровне цены в {E} денежных единиц на рынке будет"
+                f" ситуация {situation}."
+            )
+        else:
+            response = (
+                f"При уровне цены в {E} денежных единиц на рынке будет"
+                f" ситуация {situation}. Размер {situation} составит:"
+                f" {abs(surplus_deficit)} единиц товара."
+            )
 
         # Отправляем ответ пользователю
         await message.answer(
-            f"При уровне цены в {E} денежных единиц на рынке будет ситуация"
-            f" {situation}. Размер {situation} составит:"
-            f" {abs(surplus_deficit)} единиц товара.",
+            response,
             reply_markup=reply.main,
         )
 
