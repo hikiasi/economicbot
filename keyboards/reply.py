@@ -31,3 +31,15 @@ in_task = ReplyKeyboardMarkup(
     input_field_placeholder="Выберите задачу из меню",
     selective=True,
 )
+
+# Клавиатура для ввода постоянных и переменных издержек
+costs = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="Нету издержек")],
+        [KeyboardButton(text="Отмена")],
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True,
+    input_field_placeholder="Выберите задачу из меню",
+    selective=True,
+)
