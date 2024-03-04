@@ -63,23 +63,3 @@ async def cmd_cancel(message: Message, state: FSMContext):
 
     await state.clear()
     await message.answer(text="Задача отменена", reply_markup=reply.main)
-
-
-# @router.callback_query("no_costs")
-# async def no_costs(callback_query: CallbackQuery, state: FSMContext):
-#     """
-#     Обрабатывает нажатие кнопки "Издержек нет".
-
-#     Args:
-#         callback_query: CallbackQuery.
-#         state: Состояние FSM.
-
-#     Returns:
-#         None
-#     """
-#     # Сохраняем информацию о том, что издержек нет в состоянии FSM
-#     await state.update_data(has_costs=False)
-#     # Отправляем сообщение об успешном завершении
-#     await callback_query.message.answer(
-#         "Вы выбрали, что у вас нет издержек.", reply_markup=reply.costs
-#     )

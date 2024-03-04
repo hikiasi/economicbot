@@ -205,6 +205,7 @@ async def input_fc(message: types.Message, state: FSMContext):
 
     try:
         FC_total = 0
+        VC_total = 0
         text = message.text.strip().lower()
 
         if text == "нету издержек":
@@ -212,7 +213,7 @@ async def input_fc(message: types.Message, state: FSMContext):
 
             data = await state.get_data()
             VC_total = data.get("VC_total", 0)
-            FC_total += VC_total
+            FC_total = data.get("FC_total", 0)
 
             response = "При расчете прибыли учитываются:\n"
             if VC_total > 0:
@@ -258,21 +259,21 @@ async def input_fc(message: types.Message, state: FSMContext):
             await state.update_data(FC_total=FC_total, FC_info=FC_info)
 
             data = await state.get_data()
-            if data.get("has_vc"):
-                FC_total += data["VC_total"]
+            VC_total = data.get("VC_total", 0)
+            FC_total = data.get("FC_total", 0)
 
-            response = (
-                "При расчете прибыли учитываются:\n"
-                f" - переменные издержки в сумме {data['VC_total']} руб.\n"
-                f" - постоянные издержки в сумме {data['FC_total']} руб.\n"
-            )
+            response = "При расчете прибыли учитываются:\n"
+            if VC_total > 0:
+                response += f" - переменные издержки в сумме {VC_total} руб.\n"
+            if FC_total > 0:
+                response += f" - постоянные издержки в сумме {FC_total} руб.\n"
 
         data = await state.get_data()
         response += (
             f"\nПри реализации {data['Q']} единиц продукции по"
             f" {data['P']} руб."
             " за единицу товара, прибыль составит: "
-            f"{data['P'] * data['Q'] - FC_total} руб."
+            f"{data['P'] * data['Q'] - FC_total - VC_total} руб."
         )
 
         await message.answer(response, reply_markup=reply.main)
