@@ -206,6 +206,10 @@ async def input_fc(message: types.Message, state: FSMContext):
     try:
         FC_total = 0
         VC_total = 0
+
+        FC_info = []
+        VC_info = []
+
         text = message.text.strip().lower()
 
         if text == "нету издержек":
@@ -215,9 +219,16 @@ async def input_fc(message: types.Message, state: FSMContext):
             VC_total = data.get("VC_total", 0)
             FC_total = data.get("FC_total", 0)
 
+            VC_info = data.get("VC_info", [])
+            FC_info = data.get("FC_info", [])
+
             response = "При расчете прибыли учитываются:\n"
             if VC_total > 0:
-                response += f" - переменные издержки в сумме {VC_total} руб.\n"
+                response += (
+                    f" - переменные издержки в сумме {VC_total} руб.:\n"
+                )
+                for item in VC_info:
+                    response += f"   {item[0]}: {item[1]} руб.\n"
             if FC_total == 0 and VC_total == 0:
                 response += " - нет издержек"
         else:
@@ -262,11 +273,20 @@ async def input_fc(message: types.Message, state: FSMContext):
             VC_total = data.get("VC_total", 0)
             FC_total = data.get("FC_total", 0)
 
+            VC_info = data.get("VC_info", [])
+            FC_info = data.get("FC_info", [])
+
             response = "При расчете прибыли учитываются:\n"
             if VC_total > 0:
-                response += f" - переменные издержки в сумме {VC_total} руб.\n"
+                response += (
+                    f" - переменные издержки в сумме {VC_total} руб.:\n"
+                )
+                for item in VC_info:
+                    response += f"   {item[0]}: {item[1]} руб.\n"
             if FC_total > 0:
                 response += f" - постоянные издержки в сумме {FC_total} руб.\n"
+                for item in FC_info:
+                    response += f"   {item[0]}: {item[1]} руб.\n"
 
         data = await state.get_data()
         response += (
