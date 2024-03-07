@@ -292,6 +292,8 @@ async def input_fc(message: types.Message, state: FSMContext):
                 response += f" - постоянные издержки в сумме {FC_total} руб.\n"
                 for item in FC_info:
                     response += f"   {item[0]}: {item[1]} руб.\n"
+            if FC_total == 0 and VC_total == 0:
+                response += " - нет издержек"
 
         data = await state.get_data()
         profit = data["P"] * data["Q"] - FC_total - VC_total
